@@ -1,22 +1,21 @@
 import os
 import random
 import logging
-from telegram.ext import Application, CommandHandler, MessageHandler, filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from datetime import datetime
 
-# توکن ربات - می‌توانید از همین توکن استفاده کنید یا ربات جدید بسازید
+# توکن ربات
 TOKEN = os.getenv('TOKEN', '8231085757:AAHVk2agQEKM1mFZ3ULk9fQiqjLEttT8HZ0')
 
-async def start(update, context):
+def start(update, context):
     user = update.message.from_user
-    await update.message.reply_text(
+    update.message.reply_text(
         f"🏭 **سیستم آنلاین تولیدی PU - نسخه سرور**\n\n"
         f"👋 سلام {user.first_name}!\n"
         f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n"
         "📊 **دستورات مدیریتی:**\n"
         "• /register - ثبت اطلاعات شرکت\n"
         "• /new_order - ثبت سفارش جدید\n"
-        "• /my_orders - مشاهده سفارش‌ها\n"
         "• /price_list - لیست قیمت مواد\n"
         "• /calculator - ماشین حساب تولید\n"
         "• /support - پشتیبانی فنی\n"
@@ -24,8 +23,8 @@ async def start(update, context):
         "🌐 **آنلاین 24/7 - نسخه سرور ابری**"
     )
 
-async def register_company(update, context):
-    await update.message.reply_text(
+def register_company(update, context):
+    update.message.reply_text(
         "🏢 **ثبت اطلاعات شرکت تولیدی:**\n\n"
         "لطفا اطلاعات شرکت خود را به این فرمت ارسال کنید:\n\n"
         "📋 **فرمت:**\n"
@@ -35,11 +34,10 @@ async def register_company(update, context):
         "📝 **مثال:**\n"
         "شرکت: تولیدی کفش پویا\n"
         "تلفن: 09123456789\n"
-        "آدرس: تهران، شهرک صنعتی\n\n"
-        "✅ پس از ثبت، می‌توانید سفارش جدید ثبت کنید."
+        "آدرس: تهران، شهرک صنعتی"
     )
 
-async def new_order(update, context):
+def new_order(update, context):
     order_info = """
     📝 **ثبت سفارش تولید جدید:**
 
@@ -53,160 +51,76 @@ async def new_order(update, context):
     • 500 جفت (شروع تولید)
     • 1000 جفت (مقدار بهینه)
     • 5000 جفت (تخفیف حجمی)
-    • 10000+ جفت (قیمت ویژه)
-
-    🎨 **گزینه‌های رنگ:**
-    • تکرنگ (مقرون به صرفه)
-    • دو رنگ (پرطرفدار)
-    • چندرنگ (بازار جوانان)
-    • طرح دار (خاص)
 
     💰 **برای محاسبه قیمت: /calculator**
     """
-    await update.message.reply_text(order_info)
+    update.message.reply_text(order_info)
 
-async def price_list(update, context):
+def price_list(update, context):
     prices = """
-    📋 **لیست قیمت مواد اولیه (هزار تومان هر کیلو):**
+    📋 **لیست قیمت مواد اولیه (هزار تومان):**
 
     🧪 **پلی یورتان (PU):**
-    • PU نرم: 45,000 - 55,000
-    • PU سخت: 50,000 - 60,000
-    • PU تزریقی: 48,000 - 58,000
+    • PU نرم: 45-55
+    • PU سخت: 50-60
 
     🌟 **دیگر مواد:**
-    • EVA: 25,000 - 35,000
-    • ترموپلاستیک: 30,000 - 40,000
-    • لاستیک: 40,000 - 50,000
+    • EVA: 25-35
+    • ترموپلاستیک: 30-40
 
-    🏭 **هزینه‌های تولید (هر جفت):**
-    • تزریق: 3,000 - 6,000
-    • مونتاژ: 2,000 - 4,000
-    • بسته‌بندی: 1,000 - 2,000
-
-    📞 **برای قیمت دقیق: /calculator**
+    🏭 **هزینه تولید (هر جفت):**
+    • تزریق: 3-6 هزار
+    • مونتاژ: 2-4 هزار
     """
-    await update.message.reply_text(prices)
+    update.message.reply_text(prices)
 
-async def production_calculator(update, context):
+def production_calculator(update, context):
     calculator = """
-    🧮 **ماشین حساب تولید حرفه‌ای:**
+    🧮 **ماشین حساب تولید:**
 
-    💰 **بر اساس تعداد سفارش:**
+    💰 **500 جفت:**
+    • کل: 14-21 میلیون
+    • هر جفت: 28-42 هزار
 
-    🔹 **500 جفت:**
-    • مواد اولیه: 12-18 میلیون تومان
-    • هزینه تولید: 2-3 میلیون تومان
-    • **جمع: 14-21 میلیون تومان**
-    • **قیمت هر جفت: 28,000 - 42,000 تومان**
-
-    🔹 **1,000 جفت:**
-    • مواد اولیه: 20-30 میلیون تومان
-    • هزینه تولید: 3-4 میلیون تومان  
-    • **جمع: 23-34 میلیون تومان**
-    • **قیمت هر جفت: 23,000 - 34,000 تومان**
-
-    🔹 **5,000 جفت:**
-    • مواد اولیه: 80-120 میلیون تومان
-    • هزینه تولید: 12-18 میلیون تومان
-    • **جمع: 92-138 میلیون تومان**
-    • **قیمت هر جفت: 18,000 - 27,000 تومان**
-
-    📊 **نکته:** قیمت تمام شده با افزایش تعداد کاهش می‌یابد
+    💰 **1000 جفت:**
+    • کل: 23-34 میلیون  
+    • هر جفت: 23-34 هزار
     """
-    await update.message.reply_text(calculator)
+    update.message.reply_text(calculator)
 
-async def support(update, context):
+def support(update, context):
     support_text = """
-    📞 **پشتیبانی فنی و فروش:**
-
-    🔧 **پشتیبانی فنی تولید:**
-    • مهندس علی‌زاده: 09123456789
-    • مشکلات دستگاه تزریق
-    • تنظیمات مواد و فرمولاسیون
-
-    💼 **پشتیبانی فروش و قیمت:**
-    • خانم محمدی: 09129876543
-    • استعلام قیمت و ثبت سفارش
-    • مذاکره تامین کنندگان
-
-    🚚 **پشتیبانی لجستیک:**
-    • آقای رضایی: 09127654321
-    • حمل و نقل و ترخیص
-    • مدیریت انبار
-
-    ⏰ **ساعات کاری:**
-    • شنبه تا چهارشنبه: ۸:۰۰ - ۱۶:۰۰
-    • پنجشنبه: ۸:۰۰ - ۱۲:۰۰
-    • جمعه: تعطیل
-
-    📧 **ایمیل: support@pu-factory.com**
+    📞 **پشتیبانی فنی:**\n
+    • فنی: 09123456789
+    • فروش: 09129876543
+    • لجستیک: 09127654321
     """
-    await update.message.reply_text(support_text)
+    update.message.reply_text(support_text)
 
-async def status(update, context):
-    await update.message.reply_text(
-        "🟢 **وضعیت سیستم: فعال**\n\n"
-        "📊 **آمار سیستم:**\n"
-        "• نسخه: آنلاین سرور\n"
-        "• وضعیت: 24/7 فعال\n"
-        "• آخرین بروزرسانی: اکنون\n"
-        "• پشتیبانی: فعال\n\n"
-        "✅ سیستم به طور کامل operational است"
-    )
+def status(update, context):
+    update.message.reply_text("🟢 **وضعیت سیستم: فعال و آنلاین**")
 
-async def handle_message(update, context):
-    """پردازش پیام‌های متنی برای ثبت اطلاعات"""
-    text = update.message.text
-    
-    if 'شرکت:' in text and 'تلفن:' in text:
-        await update.message.reply_text(
-            "✅ **اطلاعات شرکت ثبت شد!**\n\n"
-            "📋 اطلاعات شما ذخیره گردید.\n"
-            "🎯 اکنون می‌توانید سفارش جدید ثبت کنید:\n"
-            "/new_order"
-        )
-    
-    elif 'سفارش' in text.lower():
-        await update.message.reply_text(
-            "📝 برای ثبت سفارش جدید از دستور زیر استفاده کنید:\n"
-            "/new_order"
-        )
-
-# تنظیمات لاگ
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
-
-# راه‌اندازی ربات
 def main():
     print("🚀 در حال راه‌اندازی نسخه آنلاین ربات...")
-    print("📡 اتصال به سرور تلگرام...")
     
-    app = Application.builder().token(TOKEN).build()
+    # راه‌اندازی با نسخه سازگار
+    updater = Updater(TOKEN, use_context=True)
+    dispatcher = updater.dispatcher
     
     # ثبت دستورات
-    commands = [
-        ("start", start),
-        ("register", register_company),
-        ("new_order", new_order),
-        ("price_list", price_list),
-        ("calculator", production_calculator),
-        ("support", support),
-        ("status", status)
-    ]
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CommandHandler("register", register_company))
+    dispatcher.add_handler(CommandHandler("new_order", new_order))
+    dispatcher.add_handler(CommandHandler("price_list", price_list))
+    dispatcher.add_handler(CommandHandler("calculator", production_calculator))
+    dispatcher.add_handler(CommandHandler("support", support))
+    dispatcher.add_handler(CommandHandler("status", status))
     
-    for command, handler in commands:
-        app.add_handler(CommandHandler(command, handler))
+    print("✅ ربات آنلاین فعال شد!")
     
-    # پردازش پیام‌های متنی
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-    
-    print("✅ نسخه آنلاین ربات آماده اجرا!")
-    print("🌐 در حال اتصال به سرورهای تلگرام...")
-    
-    app.run_polling()
+    # شروع ربات
+    updater.start_polling()
+    updater.idle()
 
 if __name__ == '__main__':
     main()
