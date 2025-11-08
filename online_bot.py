@@ -11,133 +11,83 @@ TOKEN = os.getenv('TOKEN', '8231085757:AAHVk2agQEKM1mFZ3ULk9fQiqjLEttT8HZ0')
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.message.from_user
     await update.message.reply_text(
-        f"🏭 **سیستم آنلاین تولیدی PU - نسخه سرور**\n\n"
+        f"🏭 **سیستم آنلاین تولیدی PU**\n\n"
         f"👋 سلام {user.first_name}!\n"
-        f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n"
-        "📊 **دستورات مدیریتی:**\n"
-        "• /register - ثبت اطلاعات شرکت\n"
-        "• /new_order - ثبت سفارش جدید\n"
-        "• /price_list - لیست قیمت مواد\n"
-        "• /calculator - ماشین حساب تولید\n"
-        "• /support - پشتیبانی فنی\n"
+        "📊 **دستورات:**\n"
+        "• /register - ثبت شرکت\n"
+        "• /new_order - سفارش جدید\n"
+        "• /price_list - قیمت مواد\n"
+        "• /calculator - ماشین حساب\n"
+        "• /support - پشتیبانی\n"
         "• /status - وضعیت سیستم\n\n"
-        "🌐 **آنلاین 24/7 - نسخه سرور ابری**"
+        "🌐 **آنلاین 24/7**"
     )
 
 async def register_company(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "🏢 **ثبت اطلاعات شرکت تولیدی:**\n\n"
-        "لطفا اطلاعات شرکت خود را به این فرمت ارسال کنید:\n\n"
-        "📋 **فرمت:**\n"
-        "شرکت: [نام شرکت]\n"
-        "تلفن: [شماره تماس]\n"
-        "آدرس: [شهر و منطقه]\n\n"
-        "📝 **مثال:**\n"
-        "شرکت: تولیدی کفش پویا\n"
-        "تلفن: 09123456789\n"
-        "آدرس: تهران، شهرک صنعتی"
+        "🏢 **ثبت اطلاعات شرکت:**\n\n"
+        "فرمت:\nشرکت: نام\nتلفن: شماره\nآدرس: آدرس"
     )
 
 async def new_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
     order_info = """
-    📝 **ثبت سفارش تولید جدید:**
-
-    🏷️ **انواع محصول:**
+    📝 **سفارش جدید:**
+    
     • دمپایی اسپرت PU
-    • دمپایی راحتی بیمارستانی  
+    • دمپایی راحتی
     • دمپایی کودک
-    • دمپایی لاکچری
-
-    🔢 **مقادیر پیشنهادی:**
-    • 500 جفت (شروع تولید)
-    • 1000 جفت (مقدار بهینه)
-    • 5000 جفت (تخفیف حجمی)
-
-    💰 **برای محاسبه قیمت: /calculator**
+    
+    💰 /calculator
     """
     await update.message.reply_text(order_info)
 
 async def price_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
     prices = """
-    📋 **لیست قیمت مواد اولیه (هزار تومان):**
-
-    🧪 **پلی یورتان (PU):**
-    • PU نرم: 45-55
-    • PU سخت: 50-60
-
-    🌟 **دیگر مواد:**
-    • EVA: 25-35
-    • ترموپلاستیک: 30-40
-
-    🏭 **هزینه تولید (هر جفت):**
-    • تزریق: 3-6 هزار
-    • مونتاژ: 2-4 هزار
+    📋 **قیمت مواد (هزار تومان):**
+    
+    🧪 PU: 45-55
+    🌟 EVA: 25-35
+    🏭 تولید: 3-6
     """
     await update.message.reply_text(prices)
 
 async def production_calculator(update: Update, context: ContextTypes.DEFAULT_TYPE):
     calculator = """
-    🧮 **ماشین حساب تولید:**
-
-    💰 **500 جفت:**
+    🧮 **ماشین حساب:**
+    
+    🔹 500 جفت:
     • کل: 14-21 میلیون
     • هر جفت: 28-42 هزار
-
-    💰 **1000 جفت:**
-    • کل: 23-34 میلیون  
-    • هر جفت: 23-34 هزار
     """
     await update.message.reply_text(calculator)
 
 async def support(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    support_text = """
-    📞 **پشتیبانی فنی:**\n
-    • فنی: 09123456789
-    • فروش: 09129876543
-    • لجستیک: 09127654321
-    """
-    await update.message.reply_text(support_text)
+    await update.message.reply_text("📞 پشتیبانی: 09123456789")
 
 async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🟢 **وضعیت سیستم: فعال و آنلاین**")
-
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """پردازش پیام‌های متنی"""
-    text = update.message.text
-    
-    if 'شرکت:' in text and 'تلفن:' in text:
-        await update.message.reply_text("✅ اطلاعات شرکت ثبت شد! /new_order")
-    elif 'سفارش' in text.lower():
-        await update.message.reply_text("📝 برای ثبت سفارش: /new_order")
+    await update.message.reply_text("🟢 سیستم فعال و آنلاین")
 
 def main():
-    # تنظیمات لاگ
-    logging.basicConfig(
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        level=logging.INFO
-    )
+    logging.basicConfig(level=logging.INFO)
+    print("🚀 راه‌اندازی ربات آنلاین...")
     
-    print("🚀 در حال راه‌اندازی نسخه آنلاین ربات...")
-    
-    # راه‌اندازی برنامه
     application = Application.builder().token(TOKEN).build()
     
-    # ثبت دستورات
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("register", register_company))
-    application.add_handler(CommandHandler("new_order", new_order))
-    application.add_handler(CommandHandler("price_list", price_list))
-    application.add_handler(CommandHandler("calculator", production_calculator))
-    application.add_handler(CommandHandler("support", support))
-    application.add_handler(CommandHandler("status", status))
+    # دستورات
+    commands = [
+        ("start", start),
+        ("register", register_company),
+        ("new_order", new_order),
+        ("price_list", price_list),
+        ("calculator", production_calculator),
+        ("support", support),
+        ("status", status)
+    ]
     
-    # پردازش پیام‌های متنی
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    for command, handler in commands:
+        application.add_handler(CommandHandler(command, handler))
     
     print("✅ ربات آنلاین فعال شد!")
-    print("🌐 در حال اتصال به سرورهای تلگرام...")
-    
-    # شروع ربات
     application.run_polling()
 
 if __name__ == '__main__':
