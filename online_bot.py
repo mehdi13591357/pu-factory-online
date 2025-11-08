@@ -100,6 +100,15 @@ def support(update, context):
 def status(update, context):
     update.message.reply_text("🟢 **وضعیت سیستم: فعال و آنلاین**")
 
+def handle_message(update, context):
+    """پردازش پیام‌های متنی"""
+    text = update.message.text
+    
+    if 'شرکت:' in text and 'تلفن:' in text:
+        update.message.reply_text("✅ اطلاعات شرکت ثبت شد! /new_order")
+    elif 'سفارش' in text.lower():
+        update.message.reply_text("📝 برای ثبت سفارش: /new_order")
+
 def main():
     print("🚀 در حال راه‌اندازی نسخه آنلاین ربات...")
     
@@ -116,7 +125,11 @@ def main():
     dispatcher.add_handler(CommandHandler("support", support))
     dispatcher.add_handler(CommandHandler("status", status))
     
+    # پردازش پیام‌های متنی
+    dispatcher.add_handler(MessageHandler(Filters.text, handle_message))
+    
     print("✅ ربات آنلاین فعال شد!")
+    print("🌐 در حال اتصال به سرورهای تلگرام...")
     
     # شروع ربات
     updater.start_polling()
